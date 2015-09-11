@@ -1,0 +1,30 @@
+{
+  "name": "samotraces.js",
+  "homepage": "https://github.com/fderbel/samotraces.js",
+  "authors": [
+    "Amélie Cordier <>",
+    "Benoît Mathern <>",
+    "Fatma Derbel <derbelfatma@gmail.com>",
+    "Raphael Cazenave-Leveque <raphael.cazenave@gmail.com>"
+  ],
+  "keywords": [
+    "traces",
+    "widgets"
+  ],
+  "license": "GPL-2",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "7a3f6e2823",
+  "_resolution": {
+    "type": "commit",
+    "commit": "7a3f6e2823d47dd62aa6f935fe29fabca884b626"
+  },
+  "_source": "https://github.com/liris-tweak/samotraces.js.git",
+  "_target": "7a3f6e2823d47dd62aa6f935fe29fabca884b626",
+  "_originalSource": "https://github.com/liris-tweak/samotraces.js.git"
+}
