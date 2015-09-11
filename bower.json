@@ -1,0 +1,25 @@
+{
+  "name": "track_cs",
+  "version": "0.1.0",
+  "homepage": "https://github.com/fderbel/track_CS.git",
+  "authors": [
+    "Fatma Derbel <derbelfatma@gmail.com>",
+    "Pierre Antoine Champin<>",
+    "Amélie Cordier <>",
+    "Damien Munch<>"  
+  ],
+  "keywords": [
+    "traces"
+  ],
+  "license": "GPL-2",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "samotracesjs": "https://github.com/liris-tweak/samotraces.js.git#7a3f6e2823d47dd62aa6f935fe29fabca884b626"
+  }
+}
