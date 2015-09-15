@@ -20,6 +20,7 @@
     "tests"
   ],
   "dependencies": {
-    "samotracesjs": "https://github.com/liris-tweak/samotraces.js.git#7a3f6e2823d47dd62aa6f935fe29fabca884b626"
+    "samotracesjs": "https://github.com/liris-tweak/samotraces.js.git#c615b1757dd1ec97a97bf99222e5f55f09ab30c9",
+    "jquery": "~2.1.4"
   }
 }

@@ -19,12 +19,12 @@
     "test",
     "tests"
   ],
-  "_release": "7a3f6e2823",
+  "_release": "c615b1757d",
   "_resolution": {
     "type": "commit",
-    "commit": "7a3f6e2823d47dd62aa6f935fe29fabca884b626"
+    "commit": "c615b1757dd1ec97a97bf99222e5f55f09ab30c9"
   },
   "_source": "https://github.com/liris-tweak/samotraces.js.git",
-  "_target": "7a3f6e2823d47dd62aa6f935fe29fabca884b626",
+  "_target": "c615b1757dd1ec97a97bf99222e5f55f09ab30c9",
   "_originalSource": "https://github.com/liris-tweak/samotraces.js.git"
 }

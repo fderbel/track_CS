@@ -10,10 +10,13 @@
  * @param {String}  
  * @todo 
 */
-  var Path_SharedWebWorker = "";
-  var Path_Config_File = "";
-	var SW;
-	var $ = require("jquery");
+  var scripts = document.getElementsByTagName('script');
+  var thisScript = scripts[scripts.length-1];
+  var path = thisScript.src.replace(/\/script\.js$/, '/'); 
+  var Path_SharedWebWorker = path.replace("collecteurTrack.js","sharedWebWorker.js");
+  var Path_Config_File = path.replace("collecteurTrack.js","configTrack.json");
+	var sharedWorker;
+	
 
   
 	/*=======================================================||
@@ -38,7 +41,7 @@
 	if ((BAseURI) && (TraceName) && (Model_URI)) {
 		var Trace_Information = {TraceName: TraceName, BaseURI: BAseURI, ModelURI: Model_URI};
 		/**** Send to the webworker traceInformation *****/
-		SW.port.postMessage({mess: "TraceInformation", Trace_Information: Trace_Information});
+		sharedWorker.port.postMessage({mess: "TraceInformation", Trace_Information: Trace_Information});
 	}
 }
   
@@ -50,15 +53,14 @@
   function send_URL(URL) {
 		"use strict";
 	  var attribute = {};
-	  attribute.hasDate = new Date().format("yyyy-MM-dd h:mm:ss");
-	  //attribute.begin = (new Date()).getTime();
-	  //attribute.end =   (new Date()).getTime();
-	  attribute.hasType = "Open_Page";
-	  attribute.hasSubject = "obsel of action open page ";
-	  attribute.hasDocument_URL = URL;
-	  attribute.hasDocument_Title = document.title;
+    attribute.hasType="Open_Page";
+    attribute.hasSubject="obsel of action open page ";
+    attribute.attributes={};
+    attribute.attributes.hasDate =new Date().format("yyyy-MM-dd h:mm:ss");
+    attribute.attributes.hasDocument_URL = URL;
+	  attribute.attributes.hasDocument_Title = document.title;
 	  /**** Send to webworker *****/
-	    SW.port.postMessage({mess: "obsel", OBSEL: attribute});
+	    sharedWorker.port.postMessage({mess: "obsel", OBSEL: attribute});
 	}
   
   /*=======================================================||
@@ -190,23 +192,29 @@ return format;
 	
 	var sendObsel =  function(e) {
 		 "use strict";
-  	var attributes = {
-    "x": e.clientX,
-    "y": e.clientY,
-  };
-  fillCommonAttributes(e, attributes);
-  SW.port.postMessage({mess: "obsel", OBSEL: attributes});
+     var obsel = {};
+ 	var attribute = {
+ 		'x': e.clientX,
+ 		'y': e.clientY,
+ 	};
+ 	fillCommonAttributes(e, attribute);
+  obsel.hasType = e.type ;
+  obsel.hasSubject = e.type;
+ 	obsel.attributes = attribute;
+  sharedWorker.port.postMessage({mess: "obsel", OBSEL: obsel});
 };
   var sendObselWithType =  function(e) {
 		  "use strict";
-  var attributes = {
-    "x": e.clientX,
-    "y": e.clientY,
-  };
-  fillCommonAttributes(e, attributes);
-  attributes.hasType = e.data.typeO ;
-  attributes.hasSuperType = e.type ;
-  SW.port.postMessage({mess: "obsel", OBSEL: attributes});
+      var obsel = {};
+      var attribute = {
+  		'x': e.clientX,
+  		'y': e.clientY,
+  	};
+  	fillCommonAttributes(e, attribute);
+  	obsel.hasType = e.type ;
+    obsel.hasSubject = e.type;
+  	obsel.attributes = attribute ;
+  sharedWorker.port.postMessage({mess: "obsel", OBSEL: obsel});
 };
 
 	/*=======================================================||
@@ -249,16 +257,28 @@ return format;
     /***** Load webworker ******/
     /***** solution with Shared web Worker ************/
     if (window.SharedWorker) {
-      SW = new SharedWorker (Path_SharedWebWorker);
-      SW.port.start();
+      
+      sharedWorker = new SharedWorker (Path_SharedWebWorker);
+      sharedWorker.port.start();
       /**Listener when receive message from webworker**/
-      SW.port.onmessage = function(e) {
-				var messName = e.mess;
+      sharedWorker.port.onerror = function(e) {
+        consloe.log('ERROR: Line ', e.lineno, ' in ', e.filename, ': ', e.message);
+    }
+      sharedWorker.port.onmessage = function(e) {
+        console.log (e.data.mess);
+				var messName = e.data.mess;
         //var messName = messageRecu.mess;
         if (messName === "GetTraceInf") {
-          listenServer(); 
+          //listenServer();
+          var TraceName = "t1/";
+          var BAseURI = "http://localhost:8001/base1/";
+          var Model_URI = "http://localhost:8001/m1/";
+          var Trace_Information = {TraceName: TraceName, BaseURI: BAseURI, ModelURI: Model_URI};
+      		/**** Send to the webworker traceInformation *****/
+      		sharedWorker.port.postMessage({mess: "TraceInformation", Trace_Information: Trace_Information}); 
         }
       };
+      
     }  
 		else /***** solution without Shared web Worker ************/
       {
