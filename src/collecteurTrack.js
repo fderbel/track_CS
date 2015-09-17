@@ -81,9 +81,10 @@ if (element === null) { return "(null)"; }
 var xpath = "";
 for (true; element && element.nodeType === 1; element = element.parentNode) {
 	//if (typeof(element.id) !== "undefined") return "#" + element.id;
-	var id = ($(element.parentNode)
-	.children(element.tagName)
-	.index(element) + 1);
+	// var id = ($(element.parentNode)
+	// .children(element.tagName)
+	// .index(element) + 1);
+  var id = Array.prototype.indexOf.call(element.parentNode.childNodes, element);
 	id = (id > 1  ?  "[" + id + "]"  :  "");
 	xpath = "/" + element.tagName.toLowerCase() + id + xpath;
 }
@@ -99,9 +100,10 @@ if (typeof (element) === "undefined") { return "(undefined)"; }
 if (element === null) { return "(null)"; }
 
 //if (typeof(element.id) !== "undefined") return "#" + element.id;
-var id = ($(element.parentNode)
-.children(element.tagName)
-.index(element) + 1);
+// var id = ($(element.parentNode)
+// .children(element.tagName)
+// .index(element) + 1);
+  var id = Array.prototype.indexOf.call(element.parentNode.childNodes, element)
 id = (id > 1  ?  "[" + id + "]"  :  "");
 var nameE = element.tagName.toLowerCase() + id;
 
@@ -198,8 +200,9 @@ return format;
  		'y': e.clientY,
  	};
  	fillCommonAttributes(e, attribute);
-  obsel.hasType = e.type ;
-  obsel.hasSubject = e.type;
+  console.log(e.type);
+  obsel.type  = e.type ;
+  obsel.subject = e.type;
  	obsel.attributes = attribute;
   sharedWorker.port.postMessage({mess: "obsel", OBSEL: obsel});
 };
@@ -211,10 +214,23 @@ return format;
   		'y': e.clientY,
   	};
   	fillCommonAttributes(e, attribute);
-  	obsel.hasType = e.type ;
-    obsel.hasSubject = e.type;
+    console.log(e);
+    console.log(e.type);
+    console.log(e.target.typeO);
+  	obsel.type = e.target.typeO ;
+    obsel.subject = e.type;
   	obsel.attributes = attribute ;
   sharedWorker.port.postMessage({mess: "obsel", OBSEL: obsel});
+};
+var addEvent = function (el, eventType, handler) {
+  "use strict";
+  if (el.addEventListener) { // DOM Level 2 browsers
+    el.addEventListener(eventType, handler, false);
+  } else if (el.attachEvent) { // IE <= 8
+    el.attachEvent('on' + eventType, handler);
+  } else { // ancient browsers
+    el['on' + eventType] = handler;
+  }
 };
 
 	/*=======================================================||
@@ -230,15 +246,22 @@ return format;
     for (var j = 0; j < event[i].selectors.length; j++) { 
       if ((event[i].selectors[j].Selector === undefined) || (event[i].selectors[j].Selector === "")) {
         if ((event[i].typeObsel === undefined) || (event[i].typeObsel === "")) {
-          $(document).on(event[i].type, sendObsel);
+          //$(document).on(event[i].type, sendObsel); //TODO
+            addEvent (document,event[i].type, sendObsel);
         }        else {
-          $(document).on(event[i].type, {typeO: event[i].typeObsel}, sendObselWithType);
+        //  $(document).on(event[i].type, {typeO: event[i].typeObsel}, sendObselWithType);//TODO
+          addEvent (document,event[i].type, sendObselWithType);
         }
       }      else {
         if ((event[i].typeObsel === undefined) || (event[i].typeObsel === "")) {
-          $(event[i].selectors[j].Selector).on (event[i].type, sendObsel);
+          //$(event[i].selectors[j].Selector).on (event[i].type, sendObsel);
+          console.log (addEvent (document.querySelector(event[i].selectors[j].Selector),event[i].type, sendObsel));
+          addEvent (document.querySelector(event[i].selectors[j].Selector),event[i].type, sendObsel);
+
         }        else {
-          $(event[i].selectors[j].Selector).on (event[i].type, {typeO: event[i].typeObsel}, sendObselWithType);
+          //$(event[i].selectors[j].Selector).on (event[i].type, {typeO: event[i].typeObsel}, sendObselWithType);
+          document.querySelector(event[i].selectors[j].Selector).typeO = event[i].typeObsel ;
+          addEvent (document.querySelector(event[i].selectors[j].Selector),event[i].type, sendObselWithType);
         }
       } 
     }
@@ -247,8 +270,7 @@ return format;
 
   
 	/*================Collectur ===========*/
-	
-	$(document).ready(function() {
+	document.addEventListener("DOMContentLoaded", function(event) {
     "use strict";
     console.log ("the tracing is started");
     /******** get information about trace  from server ****************/
@@ -261,9 +283,6 @@ return format;
       sharedWorker = new SharedWorker (Path_SharedWebWorker);
       sharedWorker.port.start();
       /**Listener when receive message from webworker**/
-      sharedWorker.port.onerror = function(e) {
-        consloe.log('ERROR: Line ', e.lineno, ' in ', e.filename, ': ', e.message);
-    }
       sharedWorker.port.onmessage = function(e) {
         console.log (e.data.mess);
 				var messName = e.data.mess;
@@ -290,23 +309,24 @@ return format;
     send_URL(document.URL) ;
       
     /******** get configuration  information  ************/
-      
-    $.ajax({
-      type: "GET",
-      url: Path_Config_File,
-      dataType: "json",
-      success: function(donnees) {
-        if (donnees === null) {return false ; }
-        for (var host = 0;host < donnees.Page.length;host++) {
-          if ((document.URL === donnees.Page[host].URL) || (document.location.host === donnees.Page[host].HostName)) { 
-            collectData(donnees.Page[host]);
-          }
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange = function()
+    {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                if (data === null) {return false ; }
+                    for (var host = 0;host < data.Page.length;host++) {
+                      if ((document.URL === data.Page[host].URL) || (document.location.host === data.Page[host].HostName)) { 
+                        collectData(data.Page[host]);
+                      }
+                    }
+            } else {
+                console.log ("erreur get config file ",xhr);
+            }
         }
-          
-      },
-      error: function OnGetAllMembersError(request, status, error) {console.log(status + "" + error);}  
-
-    });
-
+    };
+    xhr.open("GET", Path_Config_File, true);
+    xhr.send();
   });
   
