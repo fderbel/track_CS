@@ -3,7 +3,7 @@
  * @name SharedWebWorker.js.
  * @description : SCript run on background on the platform, he receive information of the event collected to and send them to samoTrace.js.
  * @author  DERBEL Fatma
- * @requires JqueryWithoutDom.js and the bib SamoTraces.js
+ * @requires  SamoTracesCore.js
  * @param
  * @param 
  * @todo 
@@ -25,7 +25,11 @@ onconnect=function(e){
 	
 /**Import samotraces-core-debug.js**/
 
-importScripts("http://localhost:8080/bower_components/samotracesjs/dist/vendorsCore.js","http://localhost:8080/bower_components/samotracesjs/dist/samotraces-core-debug.js");
+//importScripts("http://localhost:8080/bower_components/samotracesjs/src/core/EventHandler.js");
+
+importScripts('/samotracesjs/dist/samotraces-core-debug.js');
+
+//"http://localhost:8080/bower_components/samotracesjs/dist/samotraces-core-debug.js");
 
 /** MessagePort connection is opened between the associated SharedWorker and the main thread.**/
 
@@ -44,9 +48,10 @@ port.onmessage = function (event) {
 		BaseURI  = DataRecu.Trace_Information.BaseURI;
 		port.postMessage({mess:"TraceName "+TraceName});
 		port.postMessage({mess:"BaseURI "+BaseURI});
-		port.postMessage({mess:"trc "+JSON.stringify(Samotraces)});
+		port.postMessage({mess:"type  "+typeof(Samotraces)});
 
 		/**init Trace From SamoTrace.js**/
+		//TraceObj = new Samotraces.Ktbs.Trace (BaseURI+TraceName);
 		TraceObj = new Samotraces.Ktbs.Trace (BaseURI+TraceName);
 		port.postMessage({mess:"trc "+JSON.stringify (TraceObj)});
 		
