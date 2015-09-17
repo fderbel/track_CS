@@ -6,7 +6,8 @@ module.exports = function(grunt) {
         options: {
           port: 8080,
           hostname: "*",
-          keepalive: true
+          keepalive: true,
+          base: ['demo', 'bower_components','src','node_modules']
         }
       }
     },
