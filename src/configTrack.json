@@ -6,7 +6,7 @@
           "event": [
               {
                   "type": "mouseover",
-                  "typeObsel": "",
+                  "typeObsel": "typeclic",
                   "selectors": [
                       {
                           "frame": "",
