@@ -14,6 +14,8 @@
 
 var TraceObj = null;
 var connections = 0; // count active connections
+var header;
+var body;
 
 /*=======================================================||
 The onconnect is an EventHandler representing        ||
@@ -24,13 +26,7 @@ The onconnect is an EventHandler representing        ||
 onconnect=function(e){
 	
 /**Import samotraces-core-debug.js**/
-
-//importScripts("http://localhost:8080/bower_components/samotracesjs/src/core/EventHandler.js");
-
 importScripts('/samotracesjs/dist/samotraces-core-debug.js');
-
-//"http://localhost:8080/bower_components/samotracesjs/dist/samotraces-core-debug.js");
-
 /** MessagePort connection is opened between the associated SharedWorker and the main thread.**/
 
 var port = e.ports[0];
@@ -43,7 +39,7 @@ port.onmessage = function (event) {
 	port.postMessage ({mess:messName});
 	
 		// receive TraceInformation
-	if (messName=='TraceInformation') {
+	if (messName==='TraceInformation') {
 		TraceName = DataRecu.Trace_Information.TraceName;
 		BaseURI  = DataRecu.Trace_Information.BaseURI;
 		port.postMessage({mess:"TraceName "+TraceName});
@@ -57,7 +53,7 @@ port.onmessage = function (event) {
 		
 	}
 		// receive Obsel To send it to ktbs
-	else if (messName=='obsel') {
+	else if (messName==='obsel') {
 		port.postMessage({mess:"obs"});
 		port.postMessage ({mess:DataRecu.OBSEL});
 		if (TraceObj=== null) {
@@ -65,13 +61,16 @@ port.onmessage = function (event) {
 			port.postMessage({mess:'GetTraceInf'});
 		}
 		TraceObj.create_obsel (DataRecu.OBSEL);
+	} else if (messName=== 'DataPage'){
+		header=DataRecu.header;
+		body = DataRecu.body;
+	}else if (messName=== 'GetDataPage'){
+		port.postMessage({mess:body});
+		port.postMessage({mess:'DataIframe',header:header,body:body});
 	}
 
 
 },
-port.onerror = function (e) {
-  port.postMessage(e);
-}
 
 port.start();
 

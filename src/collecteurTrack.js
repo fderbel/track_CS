@@ -44,6 +44,17 @@
 		sharedWorker.port.postMessage({mess: "TraceInformation", Trace_Information: Trace_Information});
 	}
 }
+
+function sendDataOfPage() {
+  "use strict";
+  if (document.getElementsByTagName("base").length != 0){
+      var head = document.head.innerHTML;
+    }else {
+      var Base = "<base href = \""+document.location.href+"\" target=\"_blank\">" ;
+      var head = Base + document.head.innerHTML;
+      sharedWorker.port.postMessage({mess:"DataPage", body:document.body.innerHTML,header:head}); 
+    }
+}
   
   /*=======================================================||
       COLLECT THE INFORMATION OF THE VISITED PAGE          ||
@@ -275,6 +286,7 @@ var addEvent = function (el, eventType, handler) {
     console.log ("the tracing is started");
     /******** get information about trace  from server ****************/
     listenServer(); 
+    
       
     /***** Load webworker ******/
     /***** solution with Shared web Worker ************/
@@ -282,6 +294,7 @@ var addEvent = function (el, eventType, handler) {
       
       sharedWorker = new SharedWorker (Path_SharedWebWorker);
       sharedWorker.port.start();
+      sendDataOfPage();
       /**Listener when receive message from webworker**/
       sharedWorker.port.onmessage = function(e) {
         console.log (e.data.mess);
