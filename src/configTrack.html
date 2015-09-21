@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="./configTrack.js"></script>
+    </head>
+<body>
+      <form id="ConfigTracage" role="form">
+        <h1 id="conftrace"></h1>
+        <div>
+          <label for="URL">URL File</label>
+          <input Id="URL" type="text">
+          <input type="button"  id="Load" value="Load">
+          <label ></label>
+          <input type="button"  id ="ADDEvent" value="Add event"></input>
+        </div>
+        <div > 
+          <label > 
+            <input type="checkbox" id="URLCK"> URL
+          </label>
+          <label > 
+            <input type="checkbox" id="Hostname"> Hostname
+          </label>
+        </div>
+         
+          <iframe> </iframe>
+            
+        <div  Id="SelectorT" ></div>
+        <div id="EventList"> </div>
+        <br>
+        <button type="button" id="Save" value = "Save">Save</button>
+      </form>
+      <div id ="configuration"></div>
+</body>
+</html>
