@@ -23,6 +23,7 @@
   var Path_Config_File = path.replace("collecteurTrack.js","configTrack.json");
 	var sharedWorker;
 	
+  
 
   
 	/*=======================================================||
@@ -51,9 +52,13 @@
 	}
 }
 
+/*=======================================================||
+  Send Data f page to configuration                      ||
+=======================================================  ||*/
+
 function sendDataOfPage() {
   "use strict";
-  if (document.getElementsByTagName("base").length != 0){
+  if (document.getElementsByTagName("base").length !== 0){
       var head = document.head.innerHTML;
     }else {
       var Base = "<base href = \""+document.location.href+"\" target=\"_blank\">" ;
@@ -120,7 +125,7 @@ if (element === null) { return "(null)"; }
 // var id = ($(element.parentNode)
 // .children(element.tagName)
 // .index(element) + 1);
-  var id = Array.prototype.indexOf.call(element.parentNode.childNodes, element)
+  var id = Array.prototype.indexOf.call(element.parentNode.childNodes, element);
 id = (id > 1  ?  "[" + id + "]"  :  "");
 var nameE = element.tagName.toLowerCase() + id;
 
@@ -217,7 +222,7 @@ return format;
  		'y': e.clientY,
  	};
  	fillCommonAttributes(e, attribute);
-  console.log(e.type);
+  
   obsel.type  = e.type ;
   obsel.subject = e.type;
  	obsel.attributes = attribute;
@@ -231,8 +236,7 @@ return format;
   		'y': e.clientY,
   	};
   	fillCommonAttributes(e, attribute);
-    console.log(e);
-    console.log(e.type);
+  
     console.log(e.target.typeO);
   	obsel.type = e.target.typeO ;
     obsel.subject = e.type;
