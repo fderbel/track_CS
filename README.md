@@ -9,23 +9,26 @@ Track Client Sid is written in HTML and JavaScript. Track use [grunt](http://gru
 
 ## Import Track in your  web application
 -----------------------------------------
-Install Bower
+* Install Bower
 ```
 npm install -g bower 
 ```
 
-Install track
+* Install track
 
 
 ```
 bower install https://github.com/fderbel/track_CS.git#v1.0
 ```
 
-Add the path of the  script collecteur in your page html 
+* Add the path of the  script collecteur in your page html 
 
+
+```
     <script type="text/javascript" src="Path of CollecteurTrack in your app/collecteurTrack.js"></script>
+```
 
-You can change the tracing information in the header in this variables : `TraceName`,  `BAseURI`, `Model_URI`
+* You can change the tracing information in the header in this variables : `TraceName`,  `BAseURI`, `Model_URI`
 
 Admin of application can configure the tracing by opening the html page `configTrack.html`
 
@@ -47,7 +50,7 @@ By default, if you do not specify what has to be traced in a web page, track col
 
 ## Install Track
 -----------------
-
+```
 npm install
 
 bower install
@@ -55,24 +58,25 @@ bower install
 grunt connect
 
 Open localhost:8080
+```
 
 ## Project Directory Structure
 -------------------------------
 
-bower.json: A file describing client-side dependencies of the project.
+`bower.json`: A file describing client-side dependencies of the project.
 
-bower_components/: Directory containing client-side dependencies.
+`bower_components/`: Directory containing client-side dependencies.
 
-node_modules/: Directory containing build dependencies (or server-side dependencies for Node.js based server applications).
+`node_modules/`: Directory containing build dependencies (or server-side dependencies for Node.js based server applications).
 
-package.json: A file describing build dependencies of the project. (usually this folder contains server-side dependencies for Node.js based server applications)
+`package.json`: A file describing build dependencies of the project. (usually this folder contains server-side dependencies for Node.js based server applications)
 
-src/collecteurTrack.js
+`src/collecteurTrack.js`
 
-src/sharedWebWorker.js
+`src/sharedWebWorker.js`
 
-src/configTrack.json
+`src/configTrack.json`
 
-src/configTrack.html
+`src/configTrack.html`
 
-src/configTrack.js
+`src/configTrack.js`
