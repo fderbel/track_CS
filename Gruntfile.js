@@ -40,14 +40,15 @@ module.exports = function(grunt) {
     watch: {
       browserify: {
         files: [
-          "src/*.js"
+          "src/*.js,src/*.html"
         ],
         tasks: ["browserify:app"]
       }
     },
   
     jscs: {
-      src: "src/*.js",
+      src: "src/*.js,src/*.html",
+        all: ["src/*.js","src/*.html"],
       options: {
         config: ".jscsrc",
         verbose: true, // If you need output with rule names http://jscs.info/overview.html#verbose
