@@ -10,6 +10,12 @@
  * @param {String}  
  * @todo 
 */
+
+  /*Trace Information */
+  var TraceName = "t1/";
+  var BAseURI = "http://localhost:8001/base1/";
+  var Model_URI = "http://localhost:8001/base1/m1#" ;
+  
   var scripts = document.getElementsByTagName('script');
   var thisScript = scripts[scripts.length-1];
   var path = thisScript.src.replace(/\/script\.js$/, '/'); 
@@ -281,14 +287,12 @@ var addEvent = function (el, eventType, handler) {
 
   
 	/*================Collectur ===========*/
-	document.addEventListener("DOMContentLoaded", function(event) {
+	document.addEventListener("DOMContentLoaded", function() {
     "use strict";
     console.log ("the tracing is started");
     /******** get information about trace  from server ****************/
-    listenServer(); 
-    
-      
-    /***** Load webworker ******/
+    listenServer();     
+        /***** Load webworker ******/
     /***** solution with Shared web Worker ************/
     if (window.SharedWorker) {
       
@@ -302,9 +306,7 @@ var addEvent = function (el, eventType, handler) {
         //var messName = messageRecu.mess;
         if (messName === "GetTraceInf") {
           //listenServer();
-          var TraceName = "t1/";
-          var BAseURI = "http://localhost:8001/base1/";
-          var Model_URI = "http://localhost:8001/m1/";
+          
           var Trace_Information = {TraceName: TraceName, BaseURI: BAseURI, ModelURI: Model_URI};
       		/**** Send to the webworker traceInformation *****/
       		sharedWorker.port.postMessage({mess: "TraceInformation", Trace_Information: Trace_Information}); 

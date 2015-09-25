@@ -4,16 +4,15 @@ var sharedWorker = new SharedWorker ("sharedWebWorker.js");
 sharedWorker.port.start();
 
 	var index=0;
-	var ADDB = "False";
-	document.addEventListener("DOMContentLoaded", function(event) {
-		
 	
+	document.addEventListener("DOMContentLoaded", function() {
+		
+	"use strict";
   var loadBoutton = document.getElementById("Load");
   /*** Load event ***/
   loadBoutton.addEventListener('click', function() {
-		var iframe = document.getElementsByTagName("iframe");
-		URL = document.getElementById("URL").value;
-		var win = window.open(URL,"nom_popup","menubar=no, status=no, scrollbars=no, menubar=no, width=400, height=400");
+		var URL = document.getElementById("URL").value;
+		window.open(URL,"nom_popup","menubar=no, status=no, scrollbars=no, menubar=no, width=400, height=400");
 		window.setTimeout (function (){
 			sharedWorker.port.postMessage({mess:"GetDataPage"});
 		},1000);
@@ -21,11 +20,9 @@ sharedWorker.port.start();
 	},false);
 	var urlElement = document.getElementById("URL");
   urlElement.addEventListener('keypress', function(e) {
-	     if (e.keyCode==13){
-		var iframe = document.getElementsByTagName("iframe");
-		URL = document.getElementById("URL").value;
-		kango.storage.setItem("DATA", "True");  
-		var win = window.open(URL,"nom_popup","menubar=no, status=no, scrollbars=no, menubar=no, width=400, height=400");
+	     if (e.keyCode===13){
+		var URL = document.getElementById("URL").value;  
+		window.open(URL,"nom_popup","menubar=no, status=no, scrollbars=no, menubar=no, width=400, height=400");
 		e.preventDefault();
 		window.setTimeout (function (){
 			sharedWorker.port.postMessage({mess:"GetDataPage"});
@@ -46,10 +43,10 @@ sharedWorker.port.start();
       body.addEventListener ('click',function(e){
 				document.getElementById("SelectorT").innerHTML= getPath(e.target) ;    
 		   e.preventDefault();
-      })
-    }
+		 });
+	 }
     
-  }
+ };
     /*############### ADD EVENT  ###############*/
     var addEventElement = document.getElementById("ADDEvent");
     addEventElement.addEventListener ('click',function(){
@@ -140,7 +137,7 @@ sharedWorker.port.start();
     
         if (document.getElementById("Hostname").checked) 
         {
-            hostname = getHostname (URL)
+            var hostname = getHostname (URL);
             var Page = {URL:"" , HostName: hostname, event:eventArray };
         }
     
@@ -161,10 +158,9 @@ sharedWorker.port.start();
 	    // window.location.reload();
 			console.log (Page);
     	document.getElementById("configuration").innerHTML = JSON.stringify(Page);
-    },false)
+    },false);
 		
 		function getPath ( element ) {
-			"use strict";
 		// derived from http://stackoverflow.com/a/3454579/1235487
 		while (element && element.nodeType !== 1) {
 		 element = element.parentNode;
@@ -188,29 +184,7 @@ sharedWorker.port.start();
     function  getHostname (href) {
         var l = document.createElement("a");
         l.href = href;
-        hostname = l.hostname ;
+        var hostname = l.hostname ;
         return hostname;
-    };
-		
-		function save_content_to_file(content, filename)
-{
-    var dlg = false;
-    with(document){
-     ir=createElement('iframe');
-     ir.id='ifr';
-     ir.location='about.blank';
-     ir.style.display='none';
-     body.appendChild(ir);
-      with(getElementById('ifr').contentWindow.document){
-           open("text/plain", "replace");
-           charset = "utf-8";
-           write(content);
-           close();
-           document.charset = "utf-8";
-           dlg = execCommand('SaveAs', false, filename+'.txt');
-       }
-       body.removeChild(ir);
-     }
-    return dlg;
-}
+    }
 });

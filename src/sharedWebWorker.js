@@ -14,6 +14,7 @@
 
 var TraceObj = null;
 var connections = 0; // count active connections
+var Model_URI;
 var header;
 var body;
 
@@ -40,8 +41,9 @@ port.onmessage = function (event) {
 	
 		// receive TraceInformation
 	if (messName==='TraceInformation') {
-		TraceName = DataRecu.Trace_Information.TraceName;
-		BaseURI  = DataRecu.Trace_Information.BaseURI;
+		var TraceName = DataRecu.Trace_Information.TraceName;
+		var BaseURI  = DataRecu.Trace_Information.BaseURI;
+		Model_URI = DataRecu.Trace_Information.ModelURI;
 		port.postMessage({mess:"TraceName "+TraceName});
 		port.postMessage({mess:"BaseURI "+BaseURI});
 		port.postMessage({mess:"type  "+typeof(Samotraces)});
@@ -60,7 +62,8 @@ port.onmessage = function (event) {
 			// send message to the collecteur to get information about trace
 			port.postMessage({mess:'GetTraceInf'});
 		}
-		TraceObj.create_obsel (DataRecu.OBSEL);
+		port.postMessage({mess:"ModelURI "+Model_URI})
+		TraceObj.create_obsel (DataRecu.OBSEL,Model_URI);
 	} else if (messName=== 'DataPage'){
 		header=DataRecu.header;
 		body = DataRecu.body;
