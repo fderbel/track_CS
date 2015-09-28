@@ -27,7 +27,7 @@ The onconnect is an EventHandler representing        ||
 onconnect=function(e){
 	
 /**Import samotraces-core-debug.js**/
-importScripts('/samotracesjs/dist/samotraces-core-debug.js');
+importScripts('./samotracesjs/samotraces-core-debug.js');
 /** MessagePort connection is opened between the associated SharedWorker and the main thread.**/
 
 var port = e.ports[0];

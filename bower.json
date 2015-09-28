@@ -22,5 +22,15 @@
   "dependencies": {
     "samotracesjs": "https://github.com/liris-tweak/samotraces.js.git#bde4b7405fbb062db6fe94f8b5aca64f579eccce"
   
-  }
+  },
+  "install" : {
+   "path" : {
+     "js": "src/"
+   },
+   "sources" : {
+     "samotracesjs" : [
+       "bower_components/samotracesjs/dist/samotraces-core-debug.js"
+     ]
+   }
+ }
 }
