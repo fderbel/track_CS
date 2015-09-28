@@ -1,9 +1,14 @@
 var eventObj= ["click","dblclick","Focus","keydown","keypress","mouseover","Load","keyup","change","mouseup"];	
+var index=0;
+var scripts = document.getElementsByTagName('script');
+var thisScript = scripts[scripts.length-1];
+var path = thisScript.src.replace(/\/script\.js$/, '/'); 
+var Path_SharedWebWorker = path.replace("configTrack.js","sharedWebWorker.js");
 
-var sharedWorker = new SharedWorker ("sharedWebWorker.js");
+var sharedWorker = new SharedWorker (Path_SharedWebWorker);
 sharedWorker.port.start();
 
-	var index=0;
+	
 	
 	document.addEventListener("DOMContentLoaded", function() {
 		
@@ -157,8 +162,11 @@ sharedWorker.port.start();
       //   kango.storage.setItem("Config",Config);
 	    // window.location.reload();
 			console.log (Page);
-    	document.getElementById("configuration").innerHTML = JSON.stringify(Page);
-    },false);
+    	var config = document.body.appendChild(document.createElement('pre'))
+			config.innerHTML = ""; 
+			config.innerHTML = JSON.stringify(Page, undefined, 4);
+    
+		},false);
 		
 		function getPath ( element ) {
 		// derived from http://stackoverflow.com/a/3454579/1235487
@@ -170,10 +178,6 @@ sharedWorker.port.start();
 		
 		var xpath = "";
 		for (true; element && element.nodeType === 1; element = element.parentNode) {
-		 //if (typeof(element.id) !== "undefined") return "#" + element.id;
-		 // var id = ($(element.parentNode)
-		 // .children(element.tagName)
-		 // .index(element) + 1);
 		 var id = Array.prototype.indexOf.call(element.parentNode.childNodes, element);
 		 id = (id > 1  ?  "[" + id + "]"  :  "");
 		 xpath = "/" + element.tagName.toLowerCase() + id + xpath;
