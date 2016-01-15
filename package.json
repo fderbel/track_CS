@@ -1,5 +1,5 @@
-  "name": "track_cs",
-  "version": "1.0",
+ {"name": "track_cs",
+  "version": "1.0.0",
   "description": "collecteur client side ",
   "main": ".",
   "scripts": {
